@@ -53,18 +53,25 @@ class SIIMDataset(data.Dataset):
 
 	    image = cv2.imread(image_path) 
 	    # print(image.shape)
+	    # if(image.shape[2]<3):
+	    # image = cv2.cvtColor(image, cv2.COLOR_GRAY2BGR)
+	    image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
 	    image = cv2.resize(image, (self.image_size,self.image_size))
 	    # print(type(image))
-	    # print(image.shape)
+	   
 		
 	    encode = list(self.dataframe.loc[self.dataframe['ImageId'] == '.'.join(image_path.split('/')[-1].split('.')[:-1]),
                                ' EncodedPixels'].values)
+
 	    encode = self.get_mask(encode,image.shape[1],image.shape[0])
-	    encode = resize(encode,(self.image_size,self.image_size,1))				# 1 Here means the channel dimension of 1.
+	    # encode = np.expand_dims(encode, axis=2)
+	    print(encode.shape)
+	    encode = resize(encode,(self.image_size,self.image_size))				# 1 Here means the channel dimension of 1.
 	    # print(type(encode))
-	    # print(encode.shape)
-	    image = Image.fromarray(image.astype('uint8'), 'RGB')
-	    encode = Image.fromarray(encode.astype('uint8'), 'RGB')
+	    # 
+
+	    image = Image.fromarray(image.astype('uint32'), 'RGB')
+	    encode = Image.fromarray(encode.astype('uint32'), '1')
 	    
 	    aspect_ratio = image.size[1]/image.size[0]
 
@@ -122,7 +129,9 @@ class SIIMDataset(data.Dataset):
 
 	    Norm_ = T.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))
 	    image = Norm_(image)
-
+		
+	    print(image.shape)
+	    print(encode.shape)
 	    return image, encode
 
 
