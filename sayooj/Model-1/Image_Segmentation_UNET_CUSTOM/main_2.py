@@ -53,8 +53,8 @@ def main(config):
 
     
     # Train and sample the images
-    # if config.mode == 'train':
-    solver.train()
+    if config.mode == 'train':
+        solver.train()
     
 
 
@@ -71,7 +71,7 @@ if __name__ == '__main__':
     parser.add_argument('--output_ch', type=int, default=1)
     parser.add_argument('--num_epochs', type=int, default=50)
     parser.add_argument('--num_epochs_decay', type=int, default=15)
-    parser.add_argument('--batch_size', type=int, default=3)
+    parser.add_argument('--batch_size', type=int, default=2)
     parser.add_argument('--num_workers', type=int, default=8)
     parser.add_argument('--lr', type=float, default=0.0002)
     parser.add_argument('--beta1', type=float, default=0.5)        # momentum1 in Adam
